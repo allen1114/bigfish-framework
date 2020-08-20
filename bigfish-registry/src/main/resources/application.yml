@@ -1,0 +1,45 @@
+bigfish:
+  security:
+    registry:
+      username: root
+      password: root
+    actuator:
+      username: root
+      password: root
+
+spring:
+  application:
+    name: @pom.artifactId@
+  boot:
+    admin:
+      client:
+        username: root
+        password: root
+        instance:
+          metadata:
+            user.name: ${bigfish.security.actuator.username}
+            user.password: ${bigfish.security.actuator.password}
+
+eureka:
+  client:
+    fetch-registry: false
+    #    register-with-eureka: true
+    service-url:
+      defaultZone: http://root:root@localhost:${server.port}/eureka
+  #  server:
+  #    enable-self-preservation: false
+  instance:
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+    prefer-ip-address: true
+    metadata-map:
+      user.name: ${bigfish.security.actuator.username}
+      user.password: ${bigfish.security.actuator.password}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
